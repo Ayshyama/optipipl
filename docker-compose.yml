@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URI=mongodb://mongodb:27017/payload-template-ecommerce
+      - PAYLOAD_SECRET=your_random_secret_here
+      - PAYLOAD_PUBLIC_SERVER_URL=http://167.99.132.166:3000
+      - NEXT_PUBLIC_SERVER_URL=http://167.99.132.166:3000
+      - PAYLOAD_PUBLIC_DRAFT_SECRET=demo-draft-secret
+      - NEXT_PRIVATE_DRAFT_SECRET=demo-draft-secret
+      - REVALIDATION_KEY=demo-revalation-key
+      - NEXT_PRIVATE_REVALIDATION_KEY=demo-revalation-key
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
