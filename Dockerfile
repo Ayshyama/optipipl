@@ -1,11 +1,13 @@
 FROM node:18-alpine
-
 WORKDIR /app
+
+# Enable Corepack for Yarn version management
+RUN corepack enable
 
 # Copy package files
 COPY package.json yarn.lock ./
 
-# Install ONLY production dependencies
+# Install production dependencies with the correct Yarn version
 RUN yarn install --production
 
 # Copy your pre-built files
